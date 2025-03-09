@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Arka plan daire -->
+  <circle cx="100" cy="100" r="90" fill="#f44336" />
+  <circle cx="100" cy="100" r="80" fill="#ff5252" />
+  
+  <!-- Ünlem işareti -->
+  <rect x="90" y="40" width="20" height="80" fill="white" rx="5" />
+  <circle cx="100" cy="145" r="10" fill="white" />
+</svg>
