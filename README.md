@@ -100,6 +100,6 @@ Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için [LICENSE](LICE
 
 ## İletişim
 
-Proje sorumlusu: [İsim Soyisim](mailto:email@example.com)
+Proje sorumlusu: [Erhan Karaarslan](mailto:erhannkaraarslan@gmail.com)
 
-Proje linki: [https://github.com/kullaniciadi/web_analiz](https://github.com/kullaniciadi/web_analiz)
+Proje linki: [https://github.com/erhankaraarslan/web_analiz](https://github.com/erhankaraarslan/web_analiz)
