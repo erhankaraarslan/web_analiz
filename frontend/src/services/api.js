@@ -87,17 +87,19 @@ export const ApiService = {
   // iOS hizmetleri
   ios: {
     getAppInfo: (params = {}) => api.get('/ios/app-info', { params }),
-    getReviews: (params = {}) => api.get('/ios/reviews', { params }),
     getAllReviews: (params = {}) => api.get('/ios/reviews/all', { params }),
-    getReviewsByRating: (rating, params = {}) => api.get(`/ios/reviews/rating/${rating}`, { params }),
+    getReviews: (params = {}) => api.get('/ios/reviews/all', { params }), // legacy endpoint redirects to /all
+    getReviewsByRating: (rating, params = {}) => api.get(`/ios/reviews/all`, { 
+      params: { ...params, rating }
+    }),
   },
   
   // Analiz hizmetleri
   analysis: {
-    analyzeSentiment: (data) => api.post('/analysis/sentiment', data),
-    createPersonas: (data) => api.post('/analysis/personas', data),
-    getImprovements: (data) => api.post('/analysis/improvements', data),
-    getFullAnalysis: (data) => api.post('/analysis/full-analysis', data),
+    analyzeSentiment: (data, config = {}) => api.post('/analysis/sentiment', data, config),
+    createPersonas: (data, config = {}) => api.post('/analysis/personas', data, config),
+    getImprovements: (data, config = {}) => api.post('/analysis/improvements', data, config),
+    getFullAnalysis: (data, config = {}) => api.post('/analysis/full-analysis', data, config),
   }
 };
 

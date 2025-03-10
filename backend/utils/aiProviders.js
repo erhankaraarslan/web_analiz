@@ -29,8 +29,13 @@ class OpenAIProvider {
     try {
       logger.info('OpenAI ile duygu analizi başlıyor', { reviewCount: reviews.length });
       
-      const response = await this.client.chat.completions.create({
-        model: "gpt-4",
+      // Her istekte client'i yeniden oluştur - API anahtarının kesinlikle güncel olması için
+      const client = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY
+      });
+      
+      const response = await client.chat.completions.create({
+        model: "gpt-4o",
         messages: [
           {
             role: "system",
@@ -57,8 +62,13 @@ class OpenAIProvider {
     try {
       logger.info('OpenAI ile kullanıcı persona analizi başlıyor', { reviewCount: reviews.length });
       
-      const response = await this.client.chat.completions.create({
-        model: "gpt-4",
+      // Her istekte client'i yeniden oluştur
+      const client = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY
+      });
+      
+      const response = await client.chat.completions.create({
+        model: "gpt-4o",
         messages: [
           {
             role: "system",
@@ -85,8 +95,13 @@ class OpenAIProvider {
     try {
       logger.info('OpenAI ile iyileştirme önerileri oluşturuluyor', { reviewCount: reviews.length });
       
-      const response = await this.client.chat.completions.create({
-        model: "gpt-4",
+      // Her istekte client'i yeniden oluştur
+      const client = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY
+      });
+      
+      const response = await client.chat.completions.create({
+        model: "gpt-4o",
         messages: [
           {
             role: "system",

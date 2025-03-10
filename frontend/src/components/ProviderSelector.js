@@ -23,13 +23,12 @@ const ProviderSelector = ({ provider, onChange }) => {
           label="AI Sağlayıcı"
           onChange={onChange}
         >
-          <MenuItem value="anthropic">Claude (Anthropic)</MenuItem>
-          <MenuItem value="openai">GPT (OpenAI)</MenuItem>
+          <MenuItem value="openai">GPT-4o (OpenAI)</MenuItem>
         </Select>
         <FormHelperText>Analiz için AI sağlayıcısı seçin</FormHelperText>
       </FormControl>
       
-      <Tooltip title="Analiz yapmak için kullanılacak yapay zeka modelini seçebilirsiniz. Her sağlayıcı farklı özellikler ve analiz sonuçları sunabilir." arrow>
+      <Tooltip title="Analiz yapmak için OpenAI'nin GPT-4o modeli kullanılmaktadır. Bu model, daha güçlü ve çok yönlü bir analiz sağlar. Analiz yapmak için API anahtarınızın ayarlar kısmında yapılandırılmış olması gerekir." arrow>
         <IconButton size="small" sx={{ ml: 1 }}>
           <HelpOutlineIcon fontSize="small" />
         </IconButton>

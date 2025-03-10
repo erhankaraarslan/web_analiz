@@ -1,6 +1,9 @@
 // Çevre değişkenlerini yükle
 require('dotenv').config();
 
+// Globals ve imports
+const isProduction = process.env.NODE_ENV === 'production';
+
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -14,6 +17,7 @@ const logger = require('./utils/logger');
 const androidRoutes = require('./api/androidRoutesNoMock'); // Mock veri kullanmayan router
 const iosRoutes = require('./api/iosRoutes');
 const analysisRoutes = require('./api/analysisRoutes');
+const cacheRoutes = require('./api/cacheRoutes');
 
 // Google Play Scraper kütüphanesinin durumunu logla
 const gplayLib = require('google-play-scraper');
@@ -28,16 +32,33 @@ const app = express();
 // Middleware'ler
 app.use(helmet()); // Güvenlik için HTTP başlıklarını ayarlar
 app.use(cors()); // Cross-Origin isteklerine izin ver
-app.use(express.json()); // JSON parsing
+app.use(express.json({ limit: '10mb' })); // JSON parsing with larger limit for analysis
+app.use(express.urlencoded({ extended: true, limit: '10mb' })); // Form data parsing
 
 // API rotaları
 app.use('/api/android', androidRoutes);
 app.use('/api/ios', iosRoutes);
 app.use('/api/analysis', analysisRoutes);
+app.use('/api/cache', cacheRoutes);
 
-// Basit sağlık kontrolü
+// Sağlık kontrolü ve sistem durumu
 app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'ok', timestamp: new Date() });
+  // Redis bağlantısını kontrol et
+  const redisClient = require('./utils/cache/redisClient').client;
+  const isRedisConnected = redisClient ? redisClient.connected : false;
+
+  res.status(200).json({
+    status: 'ok',
+    timestamp: new Date(),
+    version: process.env.npm_package_version || '1.0.0',
+    environment: process.env.NODE_ENV || 'development',
+    services: {
+      redis: {
+        status: isRedisConnected ? 'connected' : 'disconnected',
+        enabled: process.env.REDIS_ENABLED === 'true'
+      }
+    }
+  });
 });
 
 // Varsayılan port veya 8080

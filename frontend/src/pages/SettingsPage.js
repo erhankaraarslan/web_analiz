@@ -146,7 +146,7 @@ const SettingsPage = () => {
                   fullWidth
                   type="password"
                   placeholder="sk-..."
-                  helperText="OpenAI GPT modelleri için API anahtarı"
+                  helperText="OpenAI GPT-4o modeli için API anahtarı"
                 />
               </Grid>
               
@@ -171,7 +171,7 @@ const SettingsPage = () => {
                     onChange={(e) => handleSettingChange('api', 'defaultProvider', e.target.value)}
                   >
                     <MenuItem value="anthropic">Claude (Anthropic)</MenuItem>
-                    <MenuItem value="openai">GPT (OpenAI)</MenuItem>
+                    <MenuItem value="openai">GPT-4o (OpenAI)</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
