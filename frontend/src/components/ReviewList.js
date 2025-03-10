@@ -28,6 +28,29 @@ import AppleIcon from '@mui/icons-material/Apple';
 import { format } from 'date-fns';
 import { tr } from 'date-fns/locale';
 
+// Tarih formatlamayı sağlayan yardımcı fonksiyon
+const formatDate = (review) => {
+  try {
+    // Önce date, sonra updated alanını kontrol et
+    let dateStr = null;
+    
+    if (review.date) {
+      dateStr = review.date;
+    } else if (review.updated) {
+      dateStr = review.updated;
+    }
+    
+    // Tarih yoksa bilgi mesajı döndür
+    if (!dateStr) return 'Tarih bilgisi yok';
+    
+    // Tarih formatını "DD MMMM YYYY" olarak ayarlayalım
+    return format(new Date(dateStr), 'dd MMMM yyyy', { locale: tr });
+  } catch (err) {
+    console.error('Tarih formatlanırken hata:', err);
+    return 'Geçersiz tarih';
+  }
+};
+
 const ReviewList = ({ reviews = [], platform, onLoadMore, hasMoreReviews }) => {
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
@@ -58,16 +81,6 @@ const ReviewList = ({ reviews = [], platform, onLoadMore, hasMoreReviews }) => {
     (page - 1) * reviewsPerPage, 
     page * reviewsPerPage
   );
-
-  // Tarih formatlama
-  const formatDate = (dateString) => {
-    try {
-      const date = new Date(dateString);
-      return format(date, 'dd MMMM yyyy', { locale: tr });
-    } catch (error) {
-      return 'Bilinmiyor';
-    }
-  };
 
   // Platform ikonu
   const PlatformIcon = platform === 'android' ? AndroidIcon : AppleIcon;
@@ -168,11 +181,11 @@ const ReviewList = ({ reviews = [], platform, onLoadMore, hasMoreReviews }) => {
                             mr: 1
                           }}
                         >
-                          {review.userName?.charAt(0) || 'U'}
+                          {review.userName?.charAt(0) || review.userImage?.charAt(0) || 'U'}
                         </Avatar>
                         <Box>
                           <Typography variant="subtitle2">
-                            {review.userName || 'Anonim Kullanıcı'}
+                            {review.userName || review.userImage || 'Anonim Kullanıcı'}
                           </Typography>
                           <Box display="flex" alignItems="center">
                             <Rating 
@@ -182,7 +195,9 @@ const ReviewList = ({ reviews = [], platform, onLoadMore, hasMoreReviews }) => {
                               emptyIcon={<StarIcon fontSize="inherit" />}
                             />
                             <Typography variant="caption" sx={{ ml: 1 }}>
-                              {formatDate(review.date)}
+                              {formatDate(review)}
+                              {/* Hem iOS hem Android için versiyon bilgisini göster */}
+                              {review.version && <span> • v{review.version}</span>}
                             </Typography>
                             <Chip 
                               icon={<PlatformIcon fontSize="small" />}
@@ -213,7 +228,7 @@ const ReviewList = ({ reviews = [], platform, onLoadMore, hasMoreReviews }) => {
                           }}
                         >
                           <Typography variant="caption" color="textSecondary">
-                            Geliştirici yanıtı - {formatDate(review.replyDate)}
+                            Geliştirici yanıtı - {format(new Date(review.replyDate), 'dd MMMM yyyy', { locale: tr })}
                           </Typography>
                           <Typography variant="body2">
                             {review.replyText}

@@ -130,9 +130,19 @@ const ComparisonPage = ({ loadingContext }) => {
       }
       
       setGlobalLoading(true);
-      setLoadingMessage('Platformlar karşılaştırılıyor... Bu işlem birkaç dakika sürebilir.');
+      setLoadingMessage('Android ve iOS platformları karşılaştırılıyor');
       setLoading((prev) => ({ ...prev, comparison: true }));
       setError((prev) => ({ ...prev, comparison: null }));
+      
+      // 10 saniye sonra mesajı güncelleyelim
+      setTimeout(() => {
+        setLoadingMessage('Platform farklılıkları analiz ediliyor');
+      }, 10000);
+      
+      // 20 saniye sonra mesajı tekrar güncelleyelim
+      setTimeout(() => {
+        setLoadingMessage('Karşılaştırmalı raporlar hazırlanıyor');
+      }, 20000);
       
       // Gerçek karşılaştırma için yapay zekaya istek yapılabilir
       // Burada örnek veri kullanıyoruz

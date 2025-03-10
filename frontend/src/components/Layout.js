@@ -14,7 +14,9 @@ import {
   useMediaQuery,
   useTheme,
   Avatar,
-  Container 
+  Container,
+  Tooltip,
+  Link
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -22,6 +24,8 @@ import AndroidIcon from '@mui/icons-material/Android';
 import AppleIcon from '@mui/icons-material/Apple';
 import CompareIcon from '@mui/icons-material/Compare';
 import SettingsIcon from '@mui/icons-material/Settings';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import EmailIcon from '@mui/icons-material/Email';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 // Çekmece genişliği
@@ -57,7 +61,7 @@ const Layout = ({ loadingContext }) => {
 
   // Çekmece içeriği
   const drawer = (
-    <div>
+    <div style={{ position: 'relative', height: '100%', display: 'flex', flexDirection: 'column' }}>
       <Box 
         sx={{ 
           display: 'flex', 
@@ -106,6 +110,55 @@ const Layout = ({ loadingContext }) => {
           </ListItem>
         ))}
       </List>
+      
+      {/* Mini Geliştirici İmzası */}
+      <Box 
+        sx={{ 
+          mt: 'auto',
+          pt: 1,
+          pb: 1,
+          px: 2,
+          borderTop: `1px solid ${theme.palette.divider}`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '0.7rem',
+        }}
+      >
+        <Typography variant="caption" sx={{ fontSize: '0.65rem', color: 'text.secondary' }}>
+          Developed by Erhan Karaarslan
+        </Typography>
+        <Box sx={{ display: 'flex', ml: 1 }}>
+          <Tooltip title="E-mail" arrow>
+            <Link 
+              href="mailto:erhannkaraarslan@gmail.com"
+              sx={{ 
+                color: 'text.secondary', 
+                display: 'flex',
+                mx: 0.3,
+                '&:hover': { color: 'text.primary' }
+              }}
+            >
+              <EmailIcon sx={{ fontSize: 14 }} />
+            </Link>
+          </Tooltip>
+          <Tooltip title="LinkedIn" arrow>
+            <Link 
+              href="https://www.linkedin.com/in/erhankaraarslan/"
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{ 
+                color: '#0077b5', 
+                display: 'flex',
+                mx: 0.3,
+                '&:hover': { color: '#005e8d' }
+              }}
+            >
+              <LinkedInIcon sx={{ fontSize: 14 }} />
+            </Link>
+          </Tooltip>
+        </Box>
+      </Box>
     </div>
   );
 

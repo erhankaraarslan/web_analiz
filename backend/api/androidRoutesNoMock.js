@@ -1,6 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const logger = require('../utils/logger');
+const { cacheMiddleware, getCache, setCache, createCacheKey } = require('../utils/cache/redisClient');
+
+// Cache TTL değerleri (saniye cinsinden)
+const CACHE_TTL = {
+  APP_INFO: 60 * 60, // 1 saat
+  REVIEWS: 30 * 60, // 30 dakika
+  RATING_REVIEWS: 30 * 60 // 30 dakika
+};
 
 // Google Play Scraper kütüphanesini import et
 const gplayLibModule = require('google-play-scraper');
@@ -20,7 +28,7 @@ logger.info(`appFunction türü: ${typeof appFunction}, reviewsFunction türü: 
 
 
 // Uygulama bilgilerini getir
-router.get('/app-info', async (req, res) => {
+router.get('/app-info', cacheMiddleware('android:app-info', CACHE_TTL.APP_INFO), async (req, res) => {
   try {
     // Sadece frontend'den gelen ID veya varsayılan ID'yi kullan
     const appId = req.query.appId || process.env.APP_ANDROID_ID || 'com.garantibbvadigitalassets.crypto';
@@ -85,7 +93,7 @@ router.get('/app-info', async (req, res) => {
 });
 
 // Uygulama yorumlarını getir
-router.get('/reviews', async (req, res) => {
+router.get('/reviews', cacheMiddleware('android:reviews', CACHE_TTL.REVIEWS), async (req, res) => {
   try {
     const appId = req.query.appId || process.env.APP_ANDROID_ID || 'com.garantibbvadigitalassets.crypto';
     const { limit = 100, sort = 'newest' } = req.query;
@@ -240,7 +248,7 @@ router.get('/reviews', async (req, res) => {
 });
 
 // Belirli bir derecelendirmedeki yorumları getir
-router.get('/reviews/rating/:rating', async (req, res) => {
+router.get('/reviews/rating/:rating', cacheMiddleware('android:reviews:rating', CACHE_TTL.RATING_REVIEWS), async (req, res) => {
   try {
     const appId = req.query.appId || process.env.APP_ANDROID_ID || 'com.garantibbvadigitalassets.crypto';
     const rating = parseInt(req.params.rating);
